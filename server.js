@@ -4,12 +4,13 @@ const path = require("path")
 const fs = require('fs')
 const shortID = require("shortid")
 const app = express()
-const port = process.env.port || 3002
+const PORT = process.env.PORT || 3002
 const jsonNotes = require("./db/db.json")
 const { join } = require("path")
 
 app.use(express.static("public"))
 app.use(express.json())
+
 
 app.get("/",(req,res)=>{
     res.sendFile(path.join(__dirname,"public","index.html"))
@@ -58,7 +59,8 @@ app.get("*", (req,res)=>{
 
 
 
-app.listen(port,()=>{
-    console.log(`server listening on port ${port}`)
+app.listen(PORT,()=>{
+    console.log(`server listening on port ${PORT}`)
+  
     
 })
