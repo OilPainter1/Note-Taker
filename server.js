@@ -4,7 +4,7 @@ const path = require("path")
 const fs = require('fs')
 const shortID = require("shortid")
 const app = express()
-const port = 3002
+const port = process.env.port || 3002
 const jsonNotes = require("./db/db.json")
 const { join } = require("path")
 
