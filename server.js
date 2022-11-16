@@ -2,6 +2,7 @@ const express = require("express")
 const { get } = require("http")
 const path = require("path")
 const fs = require('fs')
+const shortID = require("shortid")
 const app = express()
 const port = 3002
 const jsonNotes = require("./db/db.json")
@@ -20,12 +21,12 @@ app.get("/notes", (req,res)=>{
     
 })
 app.post("/api/notes", (req,res)=>{
-    console.log(req.body)
     if (!req.body){
         res.status(400).send("Empty note")
     }
     else
     console.log(req.body)
+    req.body.id = shortID.generate()
     jsonNotes.push(req.body)
     console.log(jsonNotes)
     fs.writeFileSync(path.join(__dirname,"db","db.json"),JSON.stringify(jsonNotes))
@@ -34,14 +35,8 @@ app.post("/api/notes", (req,res)=>{
 })
 
 app.get("/api/notes", (req,res)=>{
-    res.json(JSON.parse(fs.readFileSync(path.join(__dirname,"db","db.json"),"utf-8",(err,data)=>{
-        if(err){
-            console.log(err)
-            return
-        }else{
-            return data
-        }
-    })))
+    
+    res.json(JSON.parse(fs.readFileSync(path.join(__dirname,"db","db.json"),"utf-8")))
 })
 
 //app.post("/api/notes",(req,res)=>{
@@ -50,7 +45,7 @@ app.get("/api/notes", (req,res)=>{
 //})
 
 app.get("*", (req,res)=>{
-    res.sendFile("/Users/henrycryns/Desktop/Note-Taker/Develop/public/index.html")
+    res.sendFile(path.join(__dirname,"public","index.html"))
     res.end
 })
 
