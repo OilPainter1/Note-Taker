@@ -6,6 +6,7 @@ const shortID = require("shortid")
 const app = express()
 const port = 3002
 const jsonNotes = require("./db/db.json")
+const { join } = require("path")
 
 app.use(express.static("public"))
 app.use(express.json())
@@ -39,6 +40,12 @@ app.get("/api/notes", (req,res)=>{
     res.json(JSON.parse(fs.readFileSync(path.join(__dirname,"db","db.json"),"utf-8")))
 })
 
+app.delete("/api/notes/:id",(req,res)=>{
+    //res.send(req.params)
+    const filteredArray =jsonNotes.filter((note)=>(note.id != req.params.id))
+    fs.writeFileSync(path.join(__dirname,"db","db.json"),JSON.stringify(filteredArray))
+    res.end(filteredArray)
+})
 //app.post("/api/notes",(req,res)=>{
     //console.log(req)
     //res.end
