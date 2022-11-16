@@ -45,7 +45,7 @@ app.delete("/api/notes/:id",(req,res)=>{
     //res.send(req.params)
     const filteredArray =jsonNotes.filter((note)=>(note.id != req.params.id))
     fs.writeFileSync(path.join(__dirname,"db","db.json"),JSON.stringify(filteredArray))
-    res.end()
+    res.send("deleted note")
 })
 //app.post("/api/notes",(req,res)=>{
     //console.log(req)
