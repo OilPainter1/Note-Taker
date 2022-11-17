@@ -29,21 +29,22 @@ app.post("/api/notes", (req,res)=>{
     else
     console.log(req.body)
     req.body.id = shortID.generate()
-    jsonNotes.push(req.body)
-    console.log(jsonNotes)
-    fs.writeFileSync(path.join(__dirname,"db","db.json"),JSON.stringify(jsonNotes))
+    const readNotes = JSON.parse(fs.readFileSync(path.join(__dirname,"db","db.json"),"utf-8"))
+    readNotes.push(req.body)
+    fs.writeFileSync(path.join(__dirname,"db","db.json"),JSON.stringify(readNotes))
     res.send("done")
 
 })
 
 app.get("/api/notes", (req,res)=>{
-    
+
     res.json(JSON.parse(fs.readFileSync(path.join(__dirname,"db","db.json"),"utf-8")))
 })
 
 app.delete("/api/notes/:id",(req,res)=>{
     //res.send(req.params)
-    const filteredArray =jsonNotes.filter((note)=>(note.id != req.params.id))
+    const readFileDeleteRequest=JSON.parse(fs.readFileSync(path.join(__dirname,"db","db.json"),"utf-8"))
+    const filteredArray =readFileDeleteRequest.filter((note)=>(note.id != req.params.id))
     fs.writeFileSync(path.join(__dirname,"db","db.json"),JSON.stringify(filteredArray))
     res.send("deleted note")
 })
